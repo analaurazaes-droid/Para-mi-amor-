@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para mi amor 💜</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;font-family:Georgia,serif;background:radial-gradient(circle at top,#f8efff 0,#ead7fa 45%,#cbb0e8 100%);color:#633b79}
+.hearts{position:fixed;inset:0;pointer-events:none}
+.heart{position:absolute;color:#9b67bd;font-size:22px;animation:float 7s linear infinite;opacity:.4}
+@keyframes float{from{transform:translateY(110vh) rotate(0)}to{transform:translateY(-15vh) rotate(360deg)}}
+.scene{width:min(94vw,440px);height:600px;position:relative}
+.envelope{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:330px;height:230px;cursor:pointer;transition:1s;filter:drop-shadow(0 15px 20px rgba(70,30,90,.2))}
+.base{position:absolute;inset:0;background:#9360b0;border-radius:10px;overflow:hidden}
+.base:before{content:"";position:absolute;left:0;top:0;border-style:solid;border-width:115px 165px 0;border-color:#b783d0 transparent transparent}
+.base:after{content:"";position:absolute;right:0;bottom:0;border-style:solid;border-width:0 165px 115px;border-color:transparent transparent #774794}
+.flap{position:absolute;left:0;top:0;border-style:solid;border-width:115px 165px 0;border-color:#c79cdd transparent transparent;transform-origin:top center;transition:1s;z-index:5}
+.label{position:absolute;z-index:6;left:50%;top:52%;transform:translate(-50%,-50%);color:#fff;text-align:center;font-size:23px;font-weight:bold;text-shadow:0 2px 5px #58336d;width:100%}
+.hint{position:absolute;bottom:25px;width:100%;text-align:center;color:#633b79;font-size:16px}
+.letter{position:absolute;left:50%;top:50%;width:310px;height:405px;transform:translate(-50%,-38%) scale(.2);opacity:0;z-index:10;background:#fffaff;border:2px solid #d9bce9;border-radius:8px;padding:42px 27px;box-shadow:0 15px 40px rgba(70,30,90,.25);transition:1s ease;pointer-events:auto;display:flex;align-items:center;justify-content:center;text-align:center}
+.message{font-size:24px;line-height:1.55;color:#70447f}.message .big{font-size:32px;color:#8650a5;display:block;margin-bottom:18px}
+.open .flap{transform:rotateX(180deg);z-index:1}.open .envelope{transform:translate(-50%,-50%) scale(.72);opacity:.18}.open .letter{transform:translate(-50%,-50%) scale(1);opacity:1;pointer-events:auto}.open .hint,.open .label{opacity:0}
+.flow,.mapflow,.spotify{cursor:pointer;position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:18px;z-index:20}
+.flow.show,.mapflow.show,.spotify.show{display:flex;animation:fade .7s ease}
+@keyframes fade{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.flow h2,.mapflow h2{font-size:25px;font-weight:normal;line-height:1.45;color:#70447f;max-width:370px}.flow p,.mapflow p{font-size:15px;color:#8a62a0;margin-top:8px}
+.bouquet{width:320px;height:310px;position:relative;margin-bottom:10px}
+.flower{position:absolute;bottom:110px;width:70px;height:70px;border-radius:50%;animation:sway 3s ease-in-out infinite alternate}
+.flower:before,.flower:after{content:"";position:absolute;width:34px;height:48px;border-radius:50%;background:#b779d0;left:18px;top:-12px}.flower:after{transform:rotate(90deg);top:11px;left:0}
+.f1{left:65px;bottom:125px;background:#9e62bf}.f2{left:125px;bottom:155px;background:#b982d1;animation-delay:.3s}.f3{left:185px;bottom:125px;background:#a96cc6;animation-delay:.6s}
+.flower i{position:absolute;width:18px;height:18px;background:#f5d77d;border-radius:50%;left:26px;top:26px;z-index:2}.stem{position:absolute;width:5px;height:150px;background:#668f72;left:33px;top:55px;transform:rotate(-8deg);transform-origin:top}.f2 .stem{height:170px;transform:rotate(0)}.f3 .stem{transform:rotate(8deg)}.leaf{position:absolute;width:65px;height:25px;background:#789b7a;border-radius:100% 0 100% 0;left:-5px;top:95px;transform:rotate(25deg)}.f2 .leaf{left:20px;transform:rotate(-25deg)}.wrap{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);width:180px;height:125px;background:linear-gradient(135deg,#cdb0e5,#a97ac5);clip-path:polygon(10% 0,90% 0,100% 100%,0 100%);box-shadow:0 8px 12px #8a65a0}.bouquet:after{content:"";position:absolute;left:50%;bottom:30px;width:14px;height:95px;background:#76518c;transform:translateX(-50%) rotate(-3deg);border-radius:10px;opacity:.6}
+@keyframes sway{to{transform:rotate(3deg) translateY(-3px)}}
+
+.mapflow{justify-content:flex-start;padding-top:22px}
+.map-title{font-size:19px;color:#70447f;margin:0 0 4px}
+.map-wrap{position:relative;width:100%;max-width:400px;height:345px;margin-top:2px}
+#mexicoMap{width:100%;height:100%;overflow:visible}
+.state{fill:#eee5f4;stroke:#a98ab7;stroke-width:.7}.state.veracruz{fill:#a86bc3;stroke:#70447f;stroke-width:1.4}.state.guerrero{fill:#c58bdc;stroke:#70447f;stroke-width:1.4}
+.map-label{font-size:10px;fill:#603a70;font-weight:bold;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.route{fill:none;stroke:#a86bc3;stroke-width:1.5;stroke-dasharray:5 5;opacity:.7}
+.travel-heart{font-size:28px;opacity:0}
+.travel-heart.animate{animation:travel 3.2s ease-in-out forwards}
+@keyframes travel{0%{opacity:1;transform:translate(0,0) scale(.7)}10%{opacity:1}50%{transform:translate(var(--dx),var(--dy)) scale(1.1)}90%{opacity:1}100%{opacity:1;transform:translate(var(--dx2),var(--dy2)) scale(1)}}
+.map-message{font-size:22px;line-height:1.4;color:#70447f;max-width:390px;margin:2px 0}
+.continue{font-size:14px;color:#8a62a0;margin:3px}
+
+.spotify{z-index:30}.music{font-size:64px;margin-bottom:15px}.spotify h2{font-size:29px;color:#70447f;margin:5px}.spotify p{color:#8a62a0}.spotify a{display:inline-block;margin-top:18px;padding:15px 25px;border-radius:30px;background:#8b55a8;color:white;text-decoration:none;font-weight:bold;box-shadow:0 8px 20px rgba(100,50,120,.25)}
+@media(max-width:360px){.scene{height:570px}.letter{width:290px}.map-wrap{height:320px}.map-message{font-size:19px}}
+</style>
+</head>
+<body>
+<div class="hearts">
+<span class="heart" style="left:8%">♥</span><span class="heart" style="left:25%;animation-delay:2s">♥</span><span class="heart" style="left:48%;animation-delay:1s">♥</span><span class="heart" style="left:70%;animation-delay:3s">♥</span><span class="heart" style="left:88%;animation-delay:1.5s">♥</span>
+</div>
+
+<div class="scene" id="scene" role="button" aria-label="Continuar la carta">
+<div class="envelope" id="envelope">
+<div class="base"></div><div class="flap"></div><div class="label">Para mi amor 💜</div>
+</div>
+<div class="letter">
+<div class="message"><span class="big">Feliz cumple mes mi amor ❤️</span>Gracias por este tiempo y por todo lo bonito que me haces sentir.<br><br>Te amo ❤️</div>
+</div>
+<div class="hint" id="hint">Toca la carta para abrirla 💌</div>
+
+<div class="flow" id="flowers">
+<div class="bouquet">
+<div class="flower f1"><i></i><span class="stem"></span><span class="leaf"></span></div>
+<div class="flower f2"><i></i><span class="stem"></span><span class="leaf"></span></div>
+<div class="flower f3"><i></i><span class="stem"></span><span class="leaf"></span></div>
+<div class="wrap"></div>
+</div>
+<h2>“Algún día quiero tener el privilegio de regalarte flores que puedas oler” 💜</h2>
+<p>Toca nuevamente para continuar ✨</p>
+</div>
+
+<div class="mapflow" id="mapflow">
+<p class="map-title">Aunque nos separen kilómetros… 💜</p>
+<div class="map-wrap">
+<svg id="mexicoMap" viewBox="0 0 400 345" aria-label="Mapa de México con Veracruz y Guerrero resaltados"></svg>
+</div>
+<h2 class="map-message">“Mi corazón existe en dos lugares, aquí y donde tú estés” ❤️</h2>
+<p class="continue">Toca nuevamente para continuar ✨</p>
+</div>
+
+<div class="spotify" id="spotify">
+<div class="music">🎵💜</div><h2>I GOT YOU</h2><p>TWICE</p>
+<a href="https://open.spotify.com/track/35dhwUoJNlxrPyEIJkfDnx" target="_blank" rel="noopener">Escuchar en Spotify 🎧</a>
+</div>
+</div>
+
+<script>
+let step = 0;
+let mapReady = false;
+let travelTimer = null;
+let mapLoading = false;
+
+const scene = document.getElementById('scene');
+const envelope = document.getElementById('envelope');
+const letter = document.querySelector('.letter');
+const hint = document.getElementById('hint');
+const flowers = document.getElementById('flowers');
+const mapflow = document.getElementById('mapflow');
+const spotify = document.getElementById('spotify');
+
+function advance() {
+  if (step === 0) {
+    scene.classList.add('open');
+    step = 1;
+    return;
+  }
+
+  if (step === 1) {
+    envelope.style.display = 'none';
+    letter.style.display = 'none';
+    hint.style.display = 'none';
+    flowers.classList.add('show');
+    step = 2;
+    return;
+  }
+
+  if (step === 2) {
+    flowers.classList.remove('show');
+    mapflow.classList.add('show');
+    step = 3;
+    if (!mapReady && !mapLoading) initMap();
+    return;
+  }
+
+  if (step === 3) {
+    if (!mapReady) {
+      if (!mapLoading) initMap();
+      return;
+    }
+    if (!travelTimer) startHeartTravel();
+    return;
+  }
+
+  if (step === 4) {
+    mapflow.classList.remove('show');
+    spotify.classList.add('show');
+    step = 5;
+  }
+}
+
+/* Un solo controlador: funciona aunque se toque texto, dibujo, carta o fondo
+   dentro de la escena. El botón de Spotify queda excluido. */
+scene.addEventListener('click', function(e) {
+  if (e.target.closest('a')) return;
+  if (step >= 0 && step <= 4) {
+    advance();
+  }
+});
+
+function initMap() {
+  if (mapReady || mapLoading) return;
+  mapLoading = true;
+
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js';
+  script.onload = () => loadStates();
+  script.onerror = () => fallbackMap();
+  document.head.appendChild(script);
+}
+
+async function loadStates() {
+  try {
+    const url = 'https://cdn.jsdelivr.net/gh/nvkelso/natural-earth-vector@master/geojson/ne_50m_admin_1_states_provinces.geojson';
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('No se pudo cargar el mapa');
+    const data = await res.json();
+
+    const states = data.features.filter(f =>
+      f.properties &&
+      (f.properties.admin === 'Mexico' || f.properties.adm0_a3 === 'MEX')
+    );
+
+    const svg = d3.select('#mexicoMap');
+    svg.selectAll('*').remove();
+
+    const projection = d3.geoMercator().fitExtent(
+      [[18, 8], [382, 330]],
+      {type:'FeatureCollection', features:states}
+    );
+    const pathGen = d3.geoPath(projection);
+
+    svg.selectAll('.state')
+      .data(states)
+      .enter()
+      .append('path')
+      .attr('class', f => {
+        const n = (f.properties.name || '').toLowerCase();
+        return 'state ' +
+          (n === 'veracruz' ? 'veracruz ' :
+           n === 'guerrero' ? 'guerrero ' : '');
+      })
+      .attr('d', pathGen);
+
+    const ver = states.find(f => (f.properties.name || '').toLowerCase() === 'veracruz');
+    const gro = states.find(f => (f.properties.name || '').toLowerCase() === 'guerrero');
+
+    if (!ver || !gro) throw new Error('Estados no encontrados');
+
+    const a = pathGen.centroid(ver);
+    const b = pathGen.centroid(gro);
+
+    addMapLabels(svg, a, b);
+
+    const mid = [(a[0]+b[0])/2, (a[1]+b[1])/2 - 28];
+
+    svg.append('path')
+      .attr('class','route')
+      .attr('d', `M${a[0]},${a[1]} Q${mid[0]},${mid[1]} ${b[0]},${b[1]}`);
+
+    const heart = svg.append('text')
+      .attr('class','travel-heart')
+      .attr('x',a[0])
+      .attr('y',a[1])
+      .text('♥');
+
+    window.mapPoints = {a,b,heart};
+    mapReady = true;
+    mapLoading = false;
+  } catch(e) {
+    fallbackMap();
+  }
+}
+
+function addMapLabels(svg,a,b) {
+  svg.append('text')
+    .attr('class','map-label')
+    .attr('x',a[0]+5)
+    .attr('y',a[1]+4)
+    .text('VERACRUZ');
+
+  svg.append('text')
+    .attr('class','map-label')
+    .attr('x',b[0]+5)
+    .attr('y',b[1]+4)
+    .text('GUERRERO');
+}
+
+function fallbackMap() {
+  const svg = document.getElementById('mexicoMap');
+
+  svg.innerHTML =
+    '<path class="state" d="M52 70 L95 42 L160 47 L214 70 L252 110 L318 125 L350 175 L326 207 L344 242 L301 274 L244 265 L209 300 L170 274 L125 290 L99 252 L65 239 L78 202 L47 168 L60 128Z"/>' +
+    '<path class="state veracruz" d="M260 108 L300 125 L289 159 L270 177 L252 156 L259 128Z"/>' +
+    '<path class="state guerrero" d="M177 224 L218 211 L250 229 L238 254 L198 258Z"/>' +
+    '<path class="route" d="M277 143 Q228 166 208 237"/>' +
+    '<text class="map-label" x="266" y="119">VERACRUZ</text>' +
+    '<text class="map-label" x="197" y="247">GUERRERO</text>';
+
+  window.mapPoints = {a:[277,143],b:[208,237]};
+  mapReady = true;
+  mapLoading = false;
+}
+
+function startHeartTravel() {
+  if (travelTimer) return;
+  travelTimer = true;
+
+  const a = window.mapPoints.a;
+  const b = window.mapPoints.b;
+  const heart = window.mapPoints.heart;
+
+  if (!heart) {
+    finishMap();
+    return;
+  }
+
+  heart
+    .attr('x',a[0])
+    .attr('y',a[1])
+    .style('opacity',1);
+
+  const duration = 3200;
+  const start = performance.now();
+
+  function frame(now) {
+    const t = Math.min((now-start)/duration,1);
+    const ease = t < .5
+      ? 2*t*t
+      : 1-Math.pow(-2*t+2,2)/2;
+
+    const x = a[0] + (b[0]-a[0])*ease;
+    const y = a[1] + (b[1]-a[1])*ease - 55*Math.sin(Math.PI*ease);
+
+    heart
+      .attr('x',x)
+      .attr('y',y)
+      .style('font-size', t < 1 ? '28px' : '31px');
+
+    if (t < 1) {
+      requestAnimationFrame(frame);
+    } else {
+      finishMap();
+    }
+  }
+
+  requestAnimationFrame(frame);
+}
+
+function finishMap() {
+  setTimeout(() => {
+    /* El mapa queda visible hasta que la persona toca nuevamente,
+       así la frase se puede leer con calma. */
+    travelTimer = 'finished';
+    step = 4;
+  }, 500);
+}
+</script>
+</body>
+</html>
